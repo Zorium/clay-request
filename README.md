@@ -3,7 +3,7 @@ TODO: compile to js, and tests, and docs
 simple window.fetch wrapper
 
 ```coffee
-request = require 'clay-request'
+request = require 'iso-request'
 
 # Automatic json extraction
 request '/get'

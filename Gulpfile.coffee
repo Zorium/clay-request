@@ -4,7 +4,6 @@ mocha = require 'gulp-mocha'
 KarmaServer = require('karma').Server
 rename = require 'gulp-rename'
 webpack = require 'webpack-stream'
-istanbul = require 'gulp-coffee-istanbul'
 coffeelint = require 'gulp-coffeelint'
 
 TEST_TIMEOUT = 300
@@ -30,12 +29,10 @@ karmaConf =
   ]
   browsers: ['Chrome', 'Firefox']
 
-gulp.task 'test', ['lint', 'test:browser', 'test:coverage']
+gulp.task 'test', ['lint', 'test:browser']
 
 gulp.task 'watch', ->
   gulp.watch paths.coffee, ['test:node']
-gulp.task 'watch:phantom', ->
-  gulp.watch paths.coffee, ['test:browser:phantom']
 
 gulp.task 'lint', ->
   gulp.src paths.coffee
@@ -45,26 +42,9 @@ gulp.task 'lint', ->
 gulp.task 'test:browser', ['build:test'], (cb) ->
   new KarmaServer(_defaults(singleRun: true, karmaConf), cb).start()
 
-gulp.task 'test:browser:phantom', ['build:test'], (cb) ->
-  new KarmaServer(_defaults({
-    singleRun: true,
-    browsers: ['PhantomJS']
-  }, karmaConf), cb).start()
-
 gulp.task 'test:node', ->
   gulp.src paths.rootTests
     .pipe mocha({timeout: TEST_TIMEOUT})
-
-gulp.task 'test:coverage', ->
-  gulp.src paths.cover
-    .pipe istanbul includeUntested: false
-    .pipe istanbul.hookRequire()
-    .on 'finish', ->
-      gulp.src paths.rootTests
-        .pipe mocha({timeout: TEST_TIMEOUT})
-        .pipe istanbul.writeReports({
-          reporters: ['html', 'text', 'text-summary']
-        })
 
 gulp.task 'build:test', ->
   gulp.src paths.rootTests

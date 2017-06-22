@@ -3,13 +3,6 @@ _isArray = require 'lodash/isArray'
 _defaults = require 'lodash/defaults'
 Qs = require 'qs'
 
-Promise = if window?
-  window.Promise
-else
-  # Avoid webpack include
-  _Promise = 'bluebird'
-  require _Promise
-
 nodeFetch = unless window?
   # Avoid webpack include
   _fetch = 'node-fetch'
@@ -23,20 +16,6 @@ class RequestError extends Error
     @message = res.statusText
     @stack = (new Error()).stack
     @res = res
-
-    # LEGACY
-    @type = res.type
-    @url = res.url
-    @status = res.status
-    @ok = res.ok
-    @statusText = res.statusText
-    @headers = res.headers
-    @bodyUsed = res.bodyUsed
-    @arrayBuffer = res.arrayBuffer
-    @blob = res.blob
-    @formData = res.formData
-    @json = res.json
-    @text = res.text
 
 statusCheck = (response) ->
   if response.status >= 200 and response.status < 300
