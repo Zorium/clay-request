@@ -12,6 +12,7 @@ nodeFetch = unless window?
 
 class RequestError extends Error
   constructor: ({res}) ->
+    super()
     @name = 'RequestError'
     @message = res.statusText
     @stack = (new Error()).stack
