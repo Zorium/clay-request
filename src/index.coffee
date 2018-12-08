@@ -11,12 +11,16 @@ nodeFetch = unless window?
   fetch
 
 class RequestError extends Error
-  constructor: ({res}) ->
+  constructor: ({url, options, res, body}) ->
     super()
     @name = 'RequestError'
     @message = res.statusText
     @stack = (new Error()).stack
-    @res = res
+    @url = url
+    @options = options
+    @body = body
+
+    Object.defineProperty this, 'res', {value: res, enumerable: false}
 
 statusCheck = (response) ->
   if response.status >= 200 and response.status < 300
@@ -55,6 +59,8 @@ module.exports = (url, options) ->
   .then toJson
   .catch (err) ->
     if err.ok?
-      throw new RequestError {res: err}
+      return toJson err
+      .then (body) ->
+        throw new RequestError {url, options, body, res: err}
     else
       throw err

@@ -89,6 +89,5 @@ it 'handles errors', ->
         throw new Error 'expected error'
       , (err) ->
         b err.name, 'RequestError'
-        err.res.json()
-        .then (json) ->
-          b json, {err: 'err'}
+        b err.body, {err: 'err'}
+        b err.res.headers?
