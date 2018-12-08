@@ -1080,7 +1080,7 @@ graceful-fs@^3.0.0:
   version "3.0.11"
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-3.0.11.tgz#7613c778a1afea62f25c630a086d7f3acbbdd818"
   dependencies:
-    natives "^1.1.0"
+    natives "^1.1.3"
 
 graceful-fs@^4.1.2:
   version "4.1.11"
